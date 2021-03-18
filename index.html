@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Editor</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">    
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+    <div style="height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center;">
+        <div class="position-relative" style="height: 100%; width: 100%; background: #1e272e">
+            <div class="position-absolute w-100 d-flex text-white px-5 py-3 justify-content-between align-items-center" style="height: 70px; top: 10px !important; left: 0;">
+                <label for="btn-upload">
+                    <div id="container-btn-upload" class="d-flex justify-content-center align-items-center btn text-white mx-2 position-relative" style="background: #2C3A47; width: 60px; height: 60px; border-radius: 60px;">                         
+                        <i class="bi bi-upload" style="font-size: 18px;"></i>                    
+                        <input id="btn-upload" type="file">                    
+                    </div>
+                </label>
+                <h1 style="font-size: 24px; font-weight: 800;" class="mb-0">ANGGA PHOTO EDITOR</h1>
+                <button onclick="commingSoon()" class="d-flex justify-content-center align-items-center btn text-white mx-2" style="background: #3742fa; width: 60px; height: 60px; border-radius: 60px;">                    
+                    <i class="bi bi-download" style="font-size: 18px;"></i>
+                </button>
+            </div>
+            <div class="d-flex justify-content-center align-items-center" style="height: 90vh; width: 100%;">
+                <img id="main-image" src="" style="width: 70%; height: 65vh; object-fit: scale-down; display: none;">
+            </div>
+            <div class="position-absolute w-100 d-flex text-white px-5 py-3 justify-content-center align-items-center" style="height: 70px; background: rgba(0,0,0,0.2); bottom: 100px !important; left: 0;">      
+                <div id="brightness" style="display: none; width: 50%;">
+                    <input type="range" min=0 max=200 value=100 name="brightness" style="width: 85%; appearance: none; height: 10px; background: #2C3A47; border-radius: 50px;"> <span class="ml-4">100%</span>
+                </div>
+                <div id="contrast" style="display: none; width: 50%;">
+                    <input type="range" min=0 max=200 value=100 name="contrast" style="width: 85%; appearance: none; height: 10px; background: #2C3A47; border-radius: 50px;"> <span class="ml-4">100%</span>
+                </div>
+                <div id="opacity" style="display: none; width: 50%;">
+                    <input type="range" min=0 max=100 value=100 name="opacity" style="width: 85%; appearance: none; height: 10px; background: #2C3A47; border-radius: 50px;"> <span class="ml-4">100%</span>
+                </div>
+                <div id="saturate" style="display: none; width: 50%;">
+                    <input type="range" min=0 max=200 value=100 name="saturate" style="width: 85%; appearance: none; height: 10px; background: #2C3A47; border-radius: 50px;"> <span class="ml-4">100%</span>
+                </div>
+                <div id="sepia" style="display: none; width: 50%;">
+                    <input type="range" min=0 max=200 value=0 name="sepia" style="width: 85%; appearance: none; height: 10px; background: #2C3A47; border-radius: 50px;"> <span class="ml-4">100%</span>
+                </div>
+            </div>
+            <div class="position-absolute w-100 d-flex text-white px-5 py-2 justify-content-center align-items-center" style="height: 100px; background: #2C3A47; bottom: 0; left: 0;">
+                <button id="btn-filter-brightness" onclick="setActiveFilterType('brightness')" class="d-flex justify-content-center align-items-center btn text-white mx-2 nonactive-btn-filter-type">
+                    <i class="bi bi-brightness-high" style="font-size: 24px;"></i>
+                </button>
+                <button id="btn-filter-contrast" onclick="setActiveFilterType('contrast')" class="d-flex justify-content-center align-items-center btn text-white mx-2 nonactive-btn-filter-type">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48" viewBox="0 0 48 48"><defs><path id="photoeditorsdk-contrast-icon" d="M24 34V14c5.51 0 10 4.49 10 10s-4.49 10-10 10m0-22c-6.62 0-12 5.38-12 12s5.38 12 12 12 12-5.38 12-12-5.38-12-12-12"></path></defs><g fill="none" fill-rule="evenodd" stroke="none" stroke-width="1"><path d="M0 0H48V48H0z"></path><mask fill="currentColor"><use xlink:href="#photoeditorsdk-contrast-icon"></use></mask><use fill="currentColor" fill-opacity="0.9" xlink:href="#photoeditorsdk-contrast-icon"></use></g></svg>
+                </button>
+                <button id="btn-filter-opacity" onclick="setActiveFilterType('opacity')" class="d-flex justify-content-center align-items-center btn text-white mx-2 nonactive-btn-filter-type">                    
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48" viewBox="0 0 48 48"><defs><path id="photoeditorsdk-brightness-icon" d="M22.185 33.836c.594.109 1.2.164 1.815.164v2c-.735 0-1.462-.066-2.175-.197zm5.58-.568l.753 1.852c-.675.275-1.375.487-2.093.635l-.402-1.96c.597-.122 1.18-.299 1.741-.527zm-9.446-1.037c.5.346 1.03.646 1.586.895l-.82 1.824c-.666-.3-1.303-.66-1.903-1.074zm12.884-1.295l1.44 1.388a12.06 12.06 0 01-1.65 1.429l-1.167-1.625a10.06 10.06 0 001.377-1.192zm-15.758-1.754c.316.52.679 1.01 1.083 1.464l-1.493 1.33a12.038 12.038 0 01-1.3-1.756zm17.97-1.802l1.882.676a11.948 11.948 0 01-.925 1.982l-1.727-1.008a9.948 9.948 0 00.77-1.65zM24 18c.091 0 .182.002.273.006L24 18a6.071 6.071 0 01.668.037l.192.024a5.974 5.974 0 011.847.585l.01.005a5.992 5.992 0 011.154.768A5.99 5.99 0 0130 24c0 3.309-2.691 6-6 6a5.985 5.985 0 01-4.404-1.929l.163.17a6.052 6.052 0 01-1.353-2.07A5.951 5.951 0 0118 24c0-3.309 2.691-6 6-6zm2.827 3.173l-5.654 5.654A3.988 3.988 0 0024 28c2.206 0 4-1.794 4-4a3.988 3.988 0 00-1.173-2.827zM14.08 25.268c.076.606.208 1.2.392 1.777l-1.905.608a11.936 11.936 0 01-.472-2.134zm21.885-2.192a12.16 12.16 0 01-.032 2.198l-1.989-.21a10.193 10.193 0 00.027-1.836zM12.522 20.49l1.912.584a9.943 9.943 0 00-.37 1.783l-1.987-.226c.083-.73.232-1.445.445-2.14zm22.059-2.155c.345.643.63 1.316.853 2.013l-1.905.608a9.934 9.934 0 00-.71-1.676zm-19.587-2.266l1.5 1.323c-.402.456-.762.948-1.075 1.47l-1.715-1.03c.376-.625.808-1.215 1.29-1.763zm16.272-1.62c.58.442 1.12.936 1.61 1.476l-1.479 1.346c-.41-.45-.859-.862-1.343-1.23zm-12.241-1.372l.83 1.82a9.986 9.986 0 00-1.58.903l-1.147-1.638a11.986 11.986 0 011.897-1.085zm7.7-.766c.714.166 1.408.396 2.076.688L28 14.832a9.916 9.916 0 00-1.727-.573zm-2.857-.31l.021 2c-.613.006-1.22.068-1.812.184l-.383-1.964a12.046 12.046 0 012.174-.22z"></path></defs><g fill="currentColor" fill-rule="evenodd" stroke="none" stroke-width="1"><mask><use xlink:href="#photoeditorsdk-brightness-icon"></use></mask><use fill-opacity="0.9" transform="rotate(-45 24.039 24)" xlink:href="#photoeditorsdk-brightness-icon"></use></g></svg>
+                </button>
+                <button id="btn-filter-saturate" onclick="setActiveFilterType('saturate')" class="d-flex justify-content-center align-items-center btn text-white mx-2 nonactive-btn-filter-type">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48" viewBox="0 0 48 48"><defs><path id="photoeditorsdk-saturation-icon" d="M17 31c1.334 1.099 2 2.177 2 3.234 0 .797-.454 1.39-1.211 1.655-.165.057-.428.094-.789.111l-.172-.01a2.54 2.54 0 01-.617-.101C15.454 35.624 15 35.03 15 34.234c0-1.057.666-2.135 2-3.234zm8.7-6l-4.24 4H17v-3.81l.2-.19h8.5zm-.7-7.59l4.24 4.25L26.76 24h-8.54L25 17.41zm7.778-3.532a3 3 0 01.135 4.1l-.135.143-1.414 1.414 1.414 1.415-1.414 1.414-7.07-7.071 1.413-1.414 1.414 1.413 1.414-1.414a3.001 3.001 0 014.243 0z"></path></defs><g fill="none" fill-rule="evenodd" stroke="none" stroke-width="1"><path d="M0 0H48V48H0z"></path><mask fill="currentColor"><use xlink:href="#photoeditorsdk-saturation-icon"></use></mask><use fill="currentColor" fill-opacity="0.9" xlink:href="#photoeditorsdk-saturation-icon"></use></g></svg>
+                </button>
+                <button id="btn-filter-sepia" onclick="setActiveFilterType('sepia')" class="d-flex justify-content-center align-items-center btn text-white mx-2 nonactive-btn-filter-type">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48" viewBox="0 0 48 48"><defs><path id="photoeditorsdk-shadows-icon" d="M30.365 17.637l3.076 3.076c.382 1.09.566 2.234.56 3.387l-5.05-5.049-1.414 1.414 6.123 6.124a9.674 9.674 0 01-.792 2.036l-6.746-6.745-1.414 1.414 7.036 7.036c-.212.254-.43.502-.672.742-.24.24-.488.46-.742.672l-7.036-7.036-1.414 1.414 6.745 6.746a9.674 9.674 0 01-2.036.792l-6.124-6.123-1.414 1.414L24.101 34a10.012 10.012 0 01-3.388-.558l-3.076-3.076-.707.707c-3.896-3.896-3.896-10.246 0-14.142 3.896-3.896 10.246-3.896 14.142 0l-.707.707zm-14.849-2.12c-4.688 4.687-4.688 12.281 0 16.97a12.036 12.036 0 004.108 2.693c.064.022.127.057.191.078 4.264 1.577 9.242.658 12.671-2.772 3.43-3.429 4.35-8.407 2.772-12.67-.02-.065-.056-.128-.078-.192a12.036 12.036 0 00-2.694-4.108c-4.688-4.688-12.282-4.688-16.97 0z"></path></defs><g fill="none" fill-rule="evenodd" stroke="none" stroke-width="1"><path d="M0 0H48V48H0z"></path><mask fill="currentColor"><use xlink:href="#photoeditorsdk-shadows-icon"></use></mask><use fill="currentColor" fill-opacity="0.9" xlink:href="#photoeditorsdk-shadows-icon"></use></g></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>
