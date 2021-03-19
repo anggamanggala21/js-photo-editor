@@ -30,6 +30,17 @@
             </div>
             <div class="d-flex justify-content-center align-items-center" style="height: 90vh; width: 100%;">
                 <img id="main-image" src="" style="width: 70%; height: 65vh; object-fit: scale-down; display: none;">
+                <div style = "text-align:center; display: none;">
+                    <canvas id = "imageCanvas" width="512" height="512" style = "border:2px solid black;object-fit: scale-down;"></canvas>
+                </div>
+                <br>
+                <div style = "text-align:center; display: none;">
+                    <canvas id="lutCanvas" width="512" height="512" style = "border:2px solid black"></canvas>
+                </div>
+                <br>
+                <div id="container-result-canvas" style = "text-align:center">
+                    <canvas id="resultCanvas" width="512" height="512"></canvas>
+                </div>
             </div>
             <div class="position-absolute w-100 d-flex text-white px-5 py-3 justify-content-center align-items-center" style="height: 70px; background: rgba(0,0,0,0.2); bottom: 100px !important; left: 0;">      
                 <div id="brightness" style="display: none; width: 50%;">
@@ -47,6 +58,14 @@
                 <div id="sepia" style="display: none; width: 50%;">
                     <input type="range" min=0 max=200 value=0 name="sepia" style="width: 85%; appearance: none; height: 10px; background: #2C3A47; border-radius: 50px;"> <span class="ml-4">100%</span>
                 </div>
+                <div id="lut" style="display: none; width: 80%;">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <button onclick="selectLut('default.png')" class="btn mx-3" style="background: white; width: 30px; height: 30px; border-radius: 30px;"></button>
+                        <button onclick="selectLut('lut.png')" class="btn mx-3" style="background: red; width: 30px; height: 30px; border-radius: 30px;"></button>
+                        <button class="btn mx-3" style="background: green; width: 30px; height: 30px; border-radius: 30px;"></button>
+                        <button class="btn mx-3" style="background: blue; width: 30px; height: 30px; border-radius: 30px;"></button>
+                    </div>                    
+                </div>
             </div>
             <div class="position-absolute w-100 d-flex text-white px-5 py-2 justify-content-center align-items-center" style="height: 100px; background: #2C3A47; bottom: 0; left: 0;">
                 <button id="btn-filter-brightness" onclick="setActiveFilterType('brightness')" class="d-flex justify-content-center align-items-center btn text-white mx-2 nonactive-btn-filter-type">
@@ -63,6 +82,9 @@
                 </button>
                 <button id="btn-filter-sepia" onclick="setActiveFilterType('sepia')" class="d-flex justify-content-center align-items-center btn text-white mx-2 nonactive-btn-filter-type">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48" viewBox="0 0 48 48"><defs><path id="photoeditorsdk-shadows-icon" d="M30.365 17.637l3.076 3.076c.382 1.09.566 2.234.56 3.387l-5.05-5.049-1.414 1.414 6.123 6.124a9.674 9.674 0 01-.792 2.036l-6.746-6.745-1.414 1.414 7.036 7.036c-.212.254-.43.502-.672.742-.24.24-.488.46-.742.672l-7.036-7.036-1.414 1.414 6.745 6.746a9.674 9.674 0 01-2.036.792l-6.124-6.123-1.414 1.414L24.101 34a10.012 10.012 0 01-3.388-.558l-3.076-3.076-.707.707c-3.896-3.896-3.896-10.246 0-14.142 3.896-3.896 10.246-3.896 14.142 0l-.707.707zm-14.849-2.12c-4.688 4.687-4.688 12.281 0 16.97a12.036 12.036 0 004.108 2.693c.064.022.127.057.191.078 4.264 1.577 9.242.658 12.671-2.772 3.43-3.429 4.35-8.407 2.772-12.67-.02-.065-.056-.128-.078-.192a12.036 12.036 0 00-2.694-4.108c-4.688-4.688-12.282-4.688-16.97 0z"></path></defs><g fill="none" fill-rule="evenodd" stroke="none" stroke-width="1"><path d="M0 0H48V48H0z"></path><mask fill="currentColor"><use xlink:href="#photoeditorsdk-shadows-icon"></use></mask><use fill="currentColor" fill-opacity="0.9" xlink:href="#photoeditorsdk-shadows-icon"></use></g></svg>
+                </button>
+                <button id="btn-filter-lut" onclick="setActiveFilterType('lut')" class="d-flex justify-content-center align-items-center btn text-white mx-2 nonactive-btn-filter-type">
+                    <svg aria-hidden="true" focusable="false" aria-label="Filter" width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g><g fill="#D8D8D8" opacity="0"><rect width="48" height="48"></rect></g><g transform="translate(16 14)" fill="currentColor"><g><path d="M1.53468397,11.3244256 C2.30584171,10.1516526 4.0927284,8.69757613 8,10 C11.5643313,11.1881104 13.1877038,10.2588113 13.9183327,9.30853287 C14.2918933,10.1286474 14.5,11.0400207 14.5,12 C14.5,15.5898509 11.5898509,18.5 8,18.5 C4.41014913,18.5 1.5,15.5898509 1.5,12 C1.5,11.7718729 1.51175212,11.5464906 1.53468397,11.3244256 Z" fill-opacity="0.2"></path><path d="M1.53471819,12.6759057 C2.39408133,13.5811739 4.12541941,14.1109247 5.5,13.5 C9.81068889,11.5841383 9.99203585,9.66827654 14.3948028,10.8290113 C14.4639074,11.2088572 14.5,11.6002137 14.5,12 C14.5,15.5898509 11.5898509,18.5 8,18.5 C4.63838968,18.5 1.87279864,15.9481381 1.53471819,12.6759057 Z" fill-opacity="0.25"></path><path d="M11,1.44328993e-15 L11,4.58151705 C13.9318303,5.7682918 16,8.64262245 16,12 C16,16.418278 12.418278,20 8,20 C3.581722,20 0,16.418278 0,12 C0,8.64262245 2.06816966,5.7682918 5,4.58151705 L5,1.60982339e-15 L6.5,1.44328993e-15 L6.5,5.67393184 C3.6333,6.35109564 1.5,8.92641836 1.5,12 C1.5,15.5898509 4.41014913,18.5 8,18.5 C11.5898509,18.5 14.5,15.5898509 14.5,12 C14.5,8.92641836 12.3667,6.35109564 9.5,5.67393184 L9.5,1.77635684e-15 L11,1.44328993e-15 Z" fill-opacity="0.87"></path></g></g></g></g></svg>
                 </button>
             </div>
         </div>
