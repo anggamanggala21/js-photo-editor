@@ -1,8 +1,11 @@
 $(document).ready(function() {
 
     hideAllFilterType()
+    setBtnLutActive()
 
     $('#btn-upload').change(function() {
+        clearBodyEditor()
+        imagesLoaded = 0
         resetValueRange()
         changeFilter()
         if (this.files && this.files[0]) {
@@ -12,6 +15,7 @@ $(document).ready(function() {
                 // $("#main-image").show()
                 URLToCanvas(e.target.result, "imageCanvas");
                 URLToCanvas("luts/default.png", "lutCanvas");
+                $("#btnDownload").show();
             }
             reader.readAsDataURL(this.files[0])
         }
@@ -51,6 +55,8 @@ function resetValueRange() {
     $("#sepia input").val(0)
 }
 
+let filter = ``
+
 function changeFilter() {
     
     let brightness = $("#brightness input").val()
@@ -65,7 +71,7 @@ function changeFilter() {
     $("#saturate span").html(saturate+"%")
     $("#sepia span").html(sepia+"%")
 
-    let filter = `brightness(${brightness}%)
+    filter = `brightness(${brightness}%)
                     contrast(${contrast}%)
                     opacity(${opacity}%)
                     saturate(${saturate}%)
@@ -136,9 +142,63 @@ function applyLUT(imageID, lutID, resultID, size) {
 }
 
 function selectLut(name) {    
+    setBtnLutActive(name)
     let image = $("#main-image").attr('src')
     if (!image) return
     imagesLoaded = 0
     URLToCanvas(image, "imageCanvas");
-    URLToCanvas("luts/"+name, "lutCanvas");
+    URLToCanvas("luts/"+name+".png", "lutCanvas");
+}
+
+function setDownloadCanvas() {
+    var canvas = document.getElementById('downloadCanvas');
+    var resCanvas = document.getElementById('resultCanvas');
+    var ctx = canvas.getContext('2d');
+    ctx.filter = filter;
+    var img = new Image()
+    img.src = resCanvas.toDataURL();
+    ctx.drawImage(img,0,0, resCanvas.width, resCanvas.height);
+}
+
+function downloadImage() {
+    console.log('downloaded');
+    setDownloadCanvas()    
+    setTimeout(() => {
+        setDownloadCanvas()
+        var link = document.createElement('a');
+        link.download = 'angga-photo-editor.png';
+        link.href = document.getElementById('downloadCanvas').toDataURL()
+        link.click();
+    }, 200);
+    
+}
+
+function setBtnLutActive(name) {
+    for (let i = 1; i <= 2; i++) {
+        $("#lut"+i).attr("class", "btn mx-2 btn-lut-nonactive")
+    }
+    $("#"+name).attr("class", "btn mx-2 btn-lut-active")
+}
+
+function clearBodyEditor() {
+    $("#container-body-editor div").remove()
+    $("#container-body-editor").html(`
+        <div class="d-flex justify-content-center align-items-center" style="height: 90vh; width: 100%;">
+            <img id="main-image" src="" style="width: 70%; height: 65vh; object-fit: scale-down; display: none;">
+            <div style = "text-align:center; display: none;">
+                <canvas id = "imageCanvas" width="700" height="512" style = "border:2px solid black;object-fit: scale-down;"></canvas>
+            </div>
+            <br>
+            <div style = "text-align:center; display: none;">
+                <canvas id="lutCanvas" width="700" height="512" style = "border:2px solid black"></canvas>
+            </div>
+            <br>
+            <div id="container-result-canvas" style = "text-align:center">
+                <canvas id="resultCanvas" width="700" height="512"></canvas>
+            </div>
+            <div id="container-download-canvas" style = "text-align:center; display: none;">
+                <canvas id="downloadCanvas" width="700" height="512"></canvas>
+            </div>
+        </div>
+    `)
 }

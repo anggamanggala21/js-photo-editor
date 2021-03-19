@@ -29,3 +29,21 @@ button:focus {
     outline: none !important;
     border: none !important;
 }
+
+.btn-lut-active {
+    background: #3742fa; 
+    width: 70px; 
+    height: 45px; 
+    border-radius: 5px; 
+    padding: 0; 
+    color: white;
+}
+
+.btn-lut-nonactive {
+    background: #2C3A47; 
+    width: 70px; 
+    height: 45px; 
+    border-radius: 5px; 
+    padding: 0; 
+    color: white;
+}
